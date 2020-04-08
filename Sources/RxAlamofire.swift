@@ -850,7 +850,8 @@ extension Reactive where Base: DataRequest {
               observer.on(.error(RxAlamofireUnknownError))
             }
           case let .failure(error):
-            observer.on(.error(error as Error))
+            let err = DataResponseError<T.SerializedObject>(response: packedResponse)
+            observer.on(.error(err))
           }
         }
       return Disposables.create {
@@ -1057,4 +1058,18 @@ extension RxProgress: Equatable {}
 public func ==(lhs: RxProgress, rhs: RxProgress) -> Bool {
   return lhs.bytesWritten == rhs.bytesWritten &&
     lhs.totalBytes == rhs.totalBytes
+}
+
+/** Error class that contains the DataResponse */
+public class DataResponseError<T>: Error {
+
+    public let response: DataResponse<T>
+
+    public init(response: DataResponse<T>) {
+        self.response = response
+    }
+
+    public override var description: String {
+        return String(describing: self.response.error)
+    }
 }
