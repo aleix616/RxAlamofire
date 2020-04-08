@@ -1061,7 +1061,7 @@ public func ==(lhs: RxProgress, rhs: RxProgress) -> Bool {
 }
 
 /** Error class that contains the DataResponse */
-public class DataResponseError<T>: Error {
+public class DataResponseError<T>: NSObject, Error {
 
     public let response: DataResponse<T>
 
